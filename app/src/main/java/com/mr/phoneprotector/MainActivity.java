@@ -7,15 +7,10 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
