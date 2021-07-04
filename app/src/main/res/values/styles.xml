@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <!-- активное состояние -->
+        <item name="colorControlActivated">@android:color/holo_green_light</item>
+        <!-- неактивное состояние ползунка -->
+        <item name="colorSwitchThumbNormal">@color/black</item>
+
+        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
+        <item name="android:colorForeground">@color/purple_500</item>
+    </style>
+
+
+</resources>
