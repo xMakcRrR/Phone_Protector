@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         if(!CheckPermissions()) {
             requestPermissions();
-            //amogus
         }
 
         SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             starterSwitch.setOnCheckedChangeListener(this);
         }
 
-        //Checking for active service gfdg
+        //Checking for active service
         if (isMyServiceRunning(LockScreenService.class)) {
             starterSwitch.setChecked(true);
         } else {
