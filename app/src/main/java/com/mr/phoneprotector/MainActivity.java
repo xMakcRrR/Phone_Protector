@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             starterSwitch.setOnCheckedChangeListener(this);
         }
 
-        //Checking for active service
+        //Checking for active service gfdg
         if (isMyServiceRunning(LockScreenService.class)) {
             starterSwitch.setChecked(true);
         } else {
