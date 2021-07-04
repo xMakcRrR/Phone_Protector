@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         if(!CheckPermissions()) {
             requestPermissions();
+            //amogus
         }
 
         SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
