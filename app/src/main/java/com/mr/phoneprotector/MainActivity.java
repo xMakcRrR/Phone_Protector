@@ -17,6 +17,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
     //constants
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+    public static final int REQUEST_LOCATION_PERMISSION_CODE = 2;
+
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
 
@@ -26,8 +28,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!CheckPermissions()) {
-            requestPermissions();
+        if(!CheckPermissionsAudioRecord()) {
+            requestPermissionsAudioRecord();
+        }
+        if(!CheckPermissionsLocation()) {
+            requestPermissionsLocation();
         }
 
         SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
@@ -71,19 +76,36 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         return false;
     }
 
-    private void requestPermissions() {
+    private void requestPermissionsAudioRecord() {
         // this method is used to request the permission.
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
-    public boolean CheckPermissions() {
+    private void requestPermissionsLocation() {
+        // this method is used to request the permission.
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_LOCATION_PERMISSION_CODE);
+    }
+
+    public boolean CheckPermissionsAudioRecord() {
         // this method is used to check permission
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public boolean CheckPermissionsLocation() {
+        // this method is used to check permission
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -101,13 +123,34 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                             PackageManager.PERMISSION_GRANTED;
                     if (permissionToRecord && permissionToStore) {
                         Toast.makeText(getApplicationContext(),
-                                "Permission Granted", Toast.LENGTH_LONG).show();
+                                "Permission Granted for Audio Record",
+                                Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(),
-                                "Permission Denied", Toast.LENGTH_LONG).show();
+                                "Permission Denied for Audio Record",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+        switch (requestCode) {
+            case REQUEST_LOCATION_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionToRecord = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean permissionToStore = grantResults[1] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (permissionToRecord && permissionToStore) {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Granted for location", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Denied for location", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
         }
     }
+
+
 }
