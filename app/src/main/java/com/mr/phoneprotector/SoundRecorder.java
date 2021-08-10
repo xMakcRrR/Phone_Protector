@@ -24,7 +24,7 @@ public class SoundRecorder {
     //for test
     MediaPlayer mediaPlayer;
 
-    public SoundRecorder(ContextWrapper context) {
+    public SoundRecorder (ContextWrapper context) {
         this.contextWrapper = context;
         this.directory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         this.date = new SimpleDateFormat("dd-MM-yyyy",
@@ -79,5 +79,9 @@ public class SoundRecorder {
             mediaPlayer.start();
         } catch (IOException e) {
         }
+    }
+
+    public String getRecFilePath() {
+        return this.fileName.getPath();
     }
 }

@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,15 +20,41 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     //constants
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 2;
+    public static final int REQUEST_NETWORK_STATE_CODE = 3;
 
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ////////
+        ComponentName cn=new ComponentName(this, AdminReceiver.class);
+        DevicePolicyManager dpm=
+                (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
+
+        //for admin receiver
+        SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
+        if (starterSwitch != null) {
+            starterSwitch.setOnCheckedChangeListener(this);
+        }
+
+        if (dpm.isAdminActive(cn)) {
+            starterSwitch.setOnCheckedChangeListener(null);
+            starterSwitch.setChecked(true);
+            starterSwitch.setOnCheckedChangeListener(this);
+        } else {
+            starterSwitch.setOnCheckedChangeListener(null);
+            starterSwitch.setChecked(false);
+            starterSwitch.setOnCheckedChangeListener(this);
+        }
+        ////////
+
+
+
+
 
         if(!CheckPermissionsAudioRecord()) {
             requestPermissionsAudioRecord();
@@ -34,7 +62,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         if(!CheckPermissionsLocation()) {
             requestPermissionsLocation();
         }
+        if(!CheckPermissionsNetworkState()) {
+            requestPermissionsNetworkState();
+        }
 
+        /* for foreground service
         SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
         if (starterSwitch != null) {
             starterSwitch.setOnCheckedChangeListener(this);
@@ -46,8 +78,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         } else {
             starterSwitch.setChecked(false);
         }
+         */
     }
 
+    /* for foreground service
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Toast.makeText(this,
@@ -58,6 +92,28 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             startService(new Intent(this, LockScreenService.class));
         } else if (!isChecked) {
             stopService(new Intent(this, LockScreenService.class));
+        }
+    }
+     */
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        ComponentName cn=new ComponentName(this, AdminReceiver.class);
+        DevicePolicyManager dpm=
+                (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
+
+        Toast.makeText(this,
+                (isChecked ? getString(R.string.switch_toggled_true) : getString(R.string.switch_toggled_false)),
+                Toast.LENGTH_SHORT).show();
+
+        if (isChecked){
+            Intent intent=
+                    new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn);
+            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "vkluchi");
+            startActivity(intent);
+        } else if (!isChecked) {
+            dpm.removeActiveAdmin(cn);
         }
     }
 
@@ -91,6 +147,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 REQUEST_LOCATION_PERMISSION_CODE);
     }
 
+    private void requestPermissionsNetworkState() {
+        // this method is used to request the permission.
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
+                REQUEST_NETWORK_STATE_CODE);
+    }
+
     public boolean CheckPermissionsAudioRecord() {
         // this method is used to check permission
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -107,6 +170,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public boolean CheckPermissionsNetworkState() {
+        // this method is used to check permission
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_NETWORK_STATE);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -132,20 +202,31 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     }
                 }
                 break;
-        }
-        switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION_CODE:
                 if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] ==
+                    boolean permissionToCoarse = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] ==
+                    boolean permissionToFine = grantResults[1] ==
                             PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
+                    if (permissionToCoarse && permissionToFine) {
                         Toast.makeText(getApplicationContext(),
                                 "Permission Granted for location", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "Permission Denied for location", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case REQUEST_NETWORK_STATE_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionToNetworkState = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (permissionToNetworkState) {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Granted for network state", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Granted for network state", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;

@@ -18,33 +18,57 @@ public class CoordinatesTaker {
         public void onProviderDisabled(String provider) {
         }
     };
+    private String coordinates;
 
 
     public CoordinatesTaker(Context context) {
         this.locationManager = (LocationManager)
                 context.getSystemService(Context.LOCATION_SERVICE);
-
+        this.coordinates = new String();
     }
 
-    public String getCoordinates () {
+    public String takeCoordinates () {
         String GPScoordinates = "GPS disabled";
         String NETWORKcoordinates = "NETWORK disabled";
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            GPScoordinates = getCoordinatesViaGPS();
+            GPScoordinates = takeCoordinatesViaGPS();
             locationManager.removeUpdates(locationListener);
         }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            NETWORKcoordinates = getCoordinatesViaNETWORK();
+            NETWORKcoordinates = takeCoordinatesViaNETWORK();
             locationManager.removeUpdates(locationListener);
         }
+
+
 
         locationManager.removeUpdates(locationListener);
         return GPScoordinates + "\n" + NETWORKcoordinates;
     }
 
-    private String getCoordinatesViaGPS () {
+    public String takeCoordinatesIn () {
+        String GPScoordinates = "GPS disabled";
+        String NETWORKcoordinates = "NETWORK disabled";
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            GPScoordinates = takeCoordinatesViaGPS();
+            locationManager.removeUpdates(locationListener);
+        }
+
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            NETWORKcoordinates = takeCoordinatesViaNETWORK();
+            locationManager.removeUpdates(locationListener);
+        }
+
+
+
+        locationManager.removeUpdates(locationListener);
+        this.coordinates = GPScoordinates + "\n" + NETWORKcoordinates;
+        return this.coordinates;
+    }
+
+    private String takeCoordinatesViaGPS () {
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     0, 0, locationListener);
@@ -66,7 +90,7 @@ public class CoordinatesTaker {
         }
     }
 
-    private String getCoordinatesViaNETWORK () {
+    private String takeCoordinatesViaNETWORK () {
         try {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                     0, 0, locationListener);
@@ -87,5 +111,9 @@ public class CoordinatesTaker {
         } catch (InterruptedException e) {
             return "Amogus";
         }
+    }
+
+    public String getCoordinates() {
+        return this.coordinates;
     }
 }
