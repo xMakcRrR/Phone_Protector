@@ -8,4 +8,20 @@
     <string name="notification_title">Защитник работает</string>
     <string name="notification_text">Служба следит за попытками несанкционированнного доступа</string>
     <string name="notification_channel_description">Канал уведомлений приложения Phone Protector.</string>
+    <string name="admin_req_expl">Для отслеживания неверных попыток входа приложению
+        необходимо включить режим администратора.
+        Ниже вы можете видеть, к каким функциям телефона приложение получит доступ.
+        Без режима администратора приложение не будет работать. При выключении "защиты" режим
+        администратора отключается.
+        ВАЖНО: ЕСЛИ ВЫ ЗАХОТИТЕ УДАЛИТЬ ПРИЛОЖЕНИЕ, СНАЧАЛА НУЖНО БУДЕТ ОТКЛЮЧИТЬ "ЗАЩИТУ".
+        В ПРОТИВНОМ СЛУЧАЕ ПРИЛОЖЕНИЕ ПОПРОСТУ НЕ УДАЛИТСЯ.</string>
+    <string name="attempts_text">Количество попыток до срабатывания.</string>
+    <string name="attempts_text2">Введите оличество попыток до срабатывания.</string>
+    <string name="check_box_camera_f_text">Делать снимок с фронтальной камеры.</string>
+    <string name="check_box_camera_b_text">Делать снимок с задней камеры.</string>
+    <string name="check_box_coordinates_text">Записывать координаты с GPS.</string>
+    <string name="check_box_audio_text">Записывать звук с микрофона (30 сек.).</string>
+    <string name="check_box_send_email">Отправлять email.</string>
+    <string name="logg">phonerprotecorovich@gmail.com</string>
+    <string name="pass">PhonerPassSlozniy</string>
 </resources>

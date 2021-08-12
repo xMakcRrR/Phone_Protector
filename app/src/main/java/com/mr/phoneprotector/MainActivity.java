@@ -11,9 +11,12 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
@@ -21,41 +24,81 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 2;
     public static final int REQUEST_NETWORK_STATE_CODE = 3;
-
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
+    //PREFERENCES KEYS
+    public static final String PREF_NAME = "PHONE_PROTECTOR_PREF";
+    public static final String KEY_EMAIL = "KEY_EMAIL";
+    public static final String KEY_ATTEMPTS = "KEY_ATTEMPTS";
+    public static final String KEY_CAMERA_F = "KEY_CAMERA_F";
+    public static final String KEY_CAMERA_B = "KEY_CAMERA_B";
+    public static final String KEY_COORDINATES = "KEY_COORDINATES";
+    public static final String KEY_AUDIO = "KEY_AUDIO";
+
+    SharedPreferences sharedPreferences;
+
+    //Views
+    SwitchCompat starterSwitch;
+    EditText editTextAttempts;
+    CheckBox checkBoxCameraFront;
+    CheckBox checkBoxCameraBack;
+    CheckBox checkBoxCoordinates;
+    CheckBox checkBoxAudio;
+    CheckBox checkBoxSendEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ////////
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
         ComponentName cn=new ComponentName(this, AdminReceiver.class);
         DevicePolicyManager dpm=
                 (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
 
-        //for admin receiver
-        SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
-        if (starterSwitch != null) {
-            starterSwitch.setOnCheckedChangeListener(this);
-        }
-
+        starterSwitch = findViewById(R.id.starter_switch);
         if (dpm.isAdminActive(cn)) {
-            starterSwitch.setOnCheckedChangeListener(null);
             starterSwitch.setChecked(true);
-            starterSwitch.setOnCheckedChangeListener(this);
-        } else {
-            starterSwitch.setOnCheckedChangeListener(null);
-            starterSwitch.setChecked(false);
-            starterSwitch.setOnCheckedChangeListener(this);
         }
-        ////////
+        starterSwitch.setOnCheckedChangeListener(this);
+
+        editTextAttempts = findViewById(R.id.editTextAttempts);
+        editTextAttempts.setText(sharedPreferences.getString(KEY_ATTEMPTS, "5"));
+
+        checkBoxCameraFront = findViewById(R.id.checkBoxCameraFront);
+        if (sharedPreferences.getBoolean(KEY_CAMERA_F, false)) {
+            checkBoxCameraFront.setChecked(true);
+        }
+        checkBoxCameraFront.setOnCheckedChangeListener(this);
+
+        checkBoxCameraBack = findViewById(R.id.checkBoxCameraBack);
+        if (sharedPreferences.getBoolean(KEY_CAMERA_B, false)) {
+            checkBoxCameraBack.setChecked(true);
+        }
+        checkBoxCameraBack.setOnCheckedChangeListener(this);
+
+        checkBoxCoordinates = findViewById(R.id.checkBoxCoordinates);
+        if (sharedPreferences.getBoolean(KEY_COORDINATES, false)) {
+            checkBoxCoordinates.setChecked(true);
+        }
+        checkBoxCoordinates.setOnCheckedChangeListener(this);
+
+        checkBoxAudio = findViewById(R.id.checkBoxAudio);
+        if (sharedPreferences.getBoolean(KEY_AUDIO, false)) {
+            checkBoxAudio.setChecked(true);
+        }
+        checkBoxAudio.setOnCheckedChangeListener(this);
+
+        checkBoxSendEmail = findViewById(R.id.checkBoxSendEmail);
+        if (sharedPreferences.getBoolean(KEY_EMAIL, false)) {
+            checkBoxSendEmail.setChecked(true);
+        }
+        checkBoxSendEmail.setOnCheckedChangeListener(this);
 
 
 
-
-
+        /*
         if(!CheckPermissionsAudioRecord()) {
             requestPermissionsAudioRecord();
         }
@@ -65,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         if(!CheckPermissionsNetworkState()) {
             requestPermissionsNetworkState();
         }
+        */
 
         /* for foreground service
         SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
@@ -98,22 +142,85 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        ComponentName cn=new ComponentName(this, AdminReceiver.class);
-        DevicePolicyManager dpm=
-                (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        Toast.makeText(this,
-                (isChecked ? getString(R.string.switch_toggled_true) : getString(R.string.switch_toggled_false)),
-                Toast.LENGTH_SHORT).show();
+        if (buttonView == findViewById(R.id.starter_switch)) {
+            ComponentName cn=new ComponentName(this, AdminReceiver.class);
+            DevicePolicyManager dpm=
+                    (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
 
-        if (isChecked){
-            Intent intent=
-                    new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn);
-            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "vkluchi");
-            startActivity(intent);
-        } else if (!isChecked) {
-            dpm.removeActiveAdmin(cn);
+            if (isChecked){
+                editor.putString(KEY_ATTEMPTS, editTextAttempts.getText().toString());
+                editor.apply();
+
+                Intent intent=
+                        new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn);
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                        getString(R.string.admin_req_expl));
+                startActivity(intent);
+            } else if (!isChecked) {
+                dpm.removeActiveAdmin(cn);
+            }
+        }
+
+        if (buttonView == findViewById(R.id.checkBoxCoordinates)) {
+            if (isChecked) {
+                if(!CheckPermissionsLocation()) {
+                    requestPermissionsLocation();
+                }
+                editor.putBoolean(KEY_COORDINATES, true);
+            }
+            else {
+                editor.putBoolean(KEY_COORDINATES, false);
+            }
+            editor.apply();
+        }
+
+        if (buttonView == findViewById(R.id.checkBoxCameraFront)) {
+            if (isChecked) {
+                //TODO PERMISSIONS FOR CAMERA
+                editor.putBoolean(KEY_CAMERA_F, true);
+            }
+            else {
+                editor.putBoolean(KEY_CAMERA_F, false);
+            }
+            editor.apply();
+        }
+
+        if (buttonView == findViewById(R.id.checkBoxCameraBack)) {
+            if (isChecked) {
+                //TODO PERMISSIONS FOR CAMERA
+                editor.putBoolean(KEY_CAMERA_B, true);
+            }
+            else {
+                editor.putBoolean(KEY_CAMERA_B, false);
+            }
+            editor.apply();
+        }
+
+        if (buttonView == findViewById(R.id.checkBoxAudio)) {
+            if (isChecked) {
+                if(!CheckPermissionsAudioRecord()) {
+                    requestPermissionsAudioRecord();
+                }
+                editor.putBoolean(KEY_AUDIO, true);
+            }
+            else {
+                editor.putBoolean(KEY_AUDIO, false);
+            }
+            editor.apply();
+        }
+
+        if (buttonView == findViewById(R.id.checkBoxSendEmail)) {
+            if (isChecked) {
+                editor.putBoolean(KEY_EMAIL, true);
+            }
+            else {
+                editor.putBoolean(KEY_EMAIL, false);
+            }
+            editor.apply();
         }
     }
 
