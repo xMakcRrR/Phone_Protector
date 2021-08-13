@@ -2,29 +2,46 @@ package com.mr.phoneprotector;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Looper;
+import android.content.SharedPreferences;
 import android.os.UserHandle;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.app.NotificationCompat;
 
 public class AdminReceiver extends DeviceAdminReceiver {
+    private static int allowed_attempts;
+    SharedPreferences sharedPreferences;
+
     @Override
     public void onEnabled(Context context, Intent intent) {
+
+        sharedPreferences = context.getSharedPreferences(MainActivity.
+                PREF_NAME, Context.MODE_PRIVATE);
+        allowed_attempts = Integer.parseInt(sharedPreferences.getString(MainActivity.KEY_ATTEMPTS, "5"));
+        Log.d("Amogus", "OnEnabled "+ allowed_attempts);
     }
 
     @Override
     public void onPasswordFailed (Context context, Intent intent, UserHandle user) {
-        Log.d("Amogus", "OnPassFail");
-        context.startForegroundService(new Intent(context, WorkingService.class));
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)context.
+                getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        Log.d("Amogus", "OnPasFail " + devicePolicyManager.
+                getCurrentFailedPasswordAttempts());
+
+
+        Log.d("Amogus", devicePolicyManager.getCurrentFailedPasswordAttempts()
+                + " " + allowed_attempts);
+
+        if (devicePolicyManager.getCurrentFailedPasswordAttempts() > allowed_attempts) {
+            context.startForegroundService(new Intent(context, WorkingService.class));
+        }
     }
 
     @Override
     public void onPasswordSucceeded (Context context, Intent intent, UserHandle user) {
-        Log.d("Amogus", "OnPassSucc");
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        Log.d("Amogus", "OnPassSucc "+ devicePolicyManager.getCurrentFailedPasswordAttempts());
+        allowed_attempts = 0;
     }
 }

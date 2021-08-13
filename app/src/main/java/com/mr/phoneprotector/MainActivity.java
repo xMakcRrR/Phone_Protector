@@ -6,14 +6,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -28,18 +29,20 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static int NOTIF_ID = 2054;
     //PREFERENCES KEYS
     public static final String PREF_NAME = "PHONE_PROTECTOR_PREF";
-    public static final String KEY_EMAIL = "KEY_EMAIL";
+    public static final String KEY_EMAIL_SWITCH = "KEY_EMAIL_SWITCH";
     public static final String KEY_ATTEMPTS = "KEY_ATTEMPTS";
     public static final String KEY_CAMERA_F = "KEY_CAMERA_F";
     public static final String KEY_CAMERA_B = "KEY_CAMERA_B";
     public static final String KEY_COORDINATES = "KEY_COORDINATES";
     public static final String KEY_AUDIO = "KEY_AUDIO";
+    public static final String KEY_EMAIL_EDIT = "KEY_EMAIL_EDIT";
 
     SharedPreferences sharedPreferences;
 
     //Views
     SwitchCompat starterSwitch;
     EditText editTextAttempts;
+    EditText editTextEmail;
     CheckBox checkBoxCameraFront;
     CheckBox checkBoxCameraBack;
     CheckBox checkBoxCoordinates;
@@ -52,93 +55,99 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         ComponentName cn=new ComponentName(this, AdminReceiver.class);
         DevicePolicyManager dpm=
                 (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
 
+        //stater switch prep
         starterSwitch = findViewById(R.id.starter_switch);
         if (dpm.isAdminActive(cn)) {
             starterSwitch.setChecked(true);
         }
         starterSwitch.setOnCheckedChangeListener(this);
 
+        //edit text pin attempts prep
         editTextAttempts = findViewById(R.id.editTextAttempts);
-        editTextAttempts.setText(sharedPreferences.getString(KEY_ATTEMPTS, "5"));
+        String s_attempts = sharedPreferences.getString(KEY_ATTEMPTS, "5");
+        if (Integer.parseInt(s_attempts) == 0) {
+            editTextAttempts.setText("5");
+        } else {
+            editTextAttempts.setText(s_attempts);
+        }
+        editTextAttempts.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editor.putString(KEY_ATTEMPTS, editTextAttempts.getText().toString());
+                editor.apply();
+                Log.d("Amogus", sharedPreferences.getString(KEY_ATTEMPTS, "defVal"));
+            }
+        });
+
+        //edit text email address prep
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextEmail.setText(sharedPreferences.getString(KEY_EMAIL_EDIT, ""));
+        editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editor.putString(KEY_EMAIL_EDIT, editTextEmail.getText().toString());
+                editor.apply();
+                Log.d("Amogus", sharedPreferences.getString(KEY_EMAIL_EDIT, "defVal"));
+            }
+        });
+
+        //camera front switch prep
         checkBoxCameraFront = findViewById(R.id.checkBoxCameraFront);
         if (sharedPreferences.getBoolean(KEY_CAMERA_F, false)) {
             checkBoxCameraFront.setChecked(true);
         }
         checkBoxCameraFront.setOnCheckedChangeListener(this);
 
+        //camera back switch prep
         checkBoxCameraBack = findViewById(R.id.checkBoxCameraBack);
         if (sharedPreferences.getBoolean(KEY_CAMERA_B, false)) {
             checkBoxCameraBack.setChecked(true);
         }
         checkBoxCameraBack.setOnCheckedChangeListener(this);
 
+        //gps switch prep
         checkBoxCoordinates = findViewById(R.id.checkBoxCoordinates);
         if (sharedPreferences.getBoolean(KEY_COORDINATES, false)) {
             checkBoxCoordinates.setChecked(true);
         }
         checkBoxCoordinates.setOnCheckedChangeListener(this);
 
+        //audio switch prep
         checkBoxAudio = findViewById(R.id.checkBoxAudio);
         if (sharedPreferences.getBoolean(KEY_AUDIO, false)) {
             checkBoxAudio.setChecked(true);
         }
         checkBoxAudio.setOnCheckedChangeListener(this);
 
+        //email switch prep
         checkBoxSendEmail = findViewById(R.id.checkBoxSendEmail);
-        if (sharedPreferences.getBoolean(KEY_EMAIL, false)) {
+        if (sharedPreferences.getBoolean(KEY_EMAIL_SWITCH, false)) {
             checkBoxSendEmail.setChecked(true);
         }
         checkBoxSendEmail.setOnCheckedChangeListener(this);
-
-
-
-        /*
-        if(!CheckPermissionsAudioRecord()) {
-            requestPermissionsAudioRecord();
-        }
-        if(!CheckPermissionsLocation()) {
-            requestPermissionsLocation();
-        }
-        if(!CheckPermissionsNetworkState()) {
-            requestPermissionsNetworkState();
-        }
-        */
-
-        /* for foreground service
-        SwitchCompat starterSwitch = findViewById(R.id.starter_switch);
-        if (starterSwitch != null) {
-            starterSwitch.setOnCheckedChangeListener(this);
-        }
-
-        //Checking for active service
-        if (isMyServiceRunning(LockScreenService.class)) {
-            starterSwitch.setChecked(true);
-        } else {
-            starterSwitch.setChecked(false);
-        }
-         */
     }
-
-    /* for foreground service
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Toast.makeText(this,
-                (isChecked ? getString(R.string.switch_toggled_true) : getString(R.string.switch_toggled_false)),
-                Toast.LENGTH_SHORT).show();
-
-        if (isChecked){
-            startService(new Intent(this, LockScreenService.class));
-        } else if (!isChecked) {
-            stopService(new Intent(this, LockScreenService.class));
-        }
-    }
-     */
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -151,9 +160,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
 
             if (isChecked){
-                editor.putString(KEY_ATTEMPTS, editTextAttempts.getText().toString());
-                editor.apply();
-
                 Intent intent=
                         new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn);
@@ -215,10 +221,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         if (buttonView == findViewById(R.id.checkBoxSendEmail)) {
             if (isChecked) {
-                editor.putBoolean(KEY_EMAIL, true);
+                editor.putBoolean(KEY_EMAIL_SWITCH, true);
             }
             else {
-                editor.putBoolean(KEY_EMAIL, false);
+                editor.putBoolean(KEY_EMAIL_SWITCH, false);
             }
             editor.apply();
         }
@@ -227,16 +233,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void requestPermissionsAudioRecord() {

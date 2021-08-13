@@ -62,7 +62,7 @@ public class SoundRecorder {
             public void run() {
                 stopRecord();
             }
-        }, 10000);
+        }, 30000);
     }
 
     public void playRecord () {

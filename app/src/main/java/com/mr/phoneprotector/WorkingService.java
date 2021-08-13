@@ -10,9 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -46,7 +44,7 @@ public class WorkingService extends Service {
 
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
 
-        if (sharedPreferences.getBoolean(MainActivity.KEY_EMAIL, false)) {
+        if (sharedPreferences.getBoolean(MainActivity.KEY_EMAIL_SWITCH, false)) {
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     Looper.prepare();
@@ -55,15 +53,18 @@ public class WorkingService extends Service {
                         EmailSender emailSender = new EmailSender(getApplicationContext().
                                 getString(R.string.logg),
                                 getApplicationContext().getString(R.string.pass));
+                        String recipient = sharedPreferences.getString(MainActivity.
+                                KEY_EMAIL_EDIT, "");
                         emailSender.sendMail("Subj", "amogus hijacking ur phone!!!",
-                                "ya", "makc-rybin@mail.ru");
+                                "PhonerProtectorovich", recipient);
+                        Log.d("Amogus", "Mailus " + recipient);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
             t.start();
-            Log.d("Amogus", "Mailus");
+
         }
 
         //Stop sefl after some time
