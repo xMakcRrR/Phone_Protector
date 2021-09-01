@@ -15,14 +15,24 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 public class WorkingService extends Service {
+    private static boolean isOnline;
+    private SharedPreferences sharedPreferences;
+    private SoundRecorder soundRecorder;
+    private CoordinatesTaker coordinatesTaker;
+    private EmailSender emailSender;
+
+    private String coordinates;
+    private String soundPath;
+    
     public WorkingService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("Amogus", "Service online");
+        isOnline = true;
 
-        //Notification for foreground
+        // Notification for foreground ///////
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -40,31 +50,59 @@ public class WorkingService extends Service {
 
         Notification notification = builder.build();
         startForeground(MainActivity.NOTIF_ID, notification);
-        //
+        ////////////////////////////////////////
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
+
+        if (sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false)) {
+            soundRecorder = new SoundRecorder(this);
+            soundRecorder.takeRecord();
+        }
+
+        if (sharedPreferences.getBoolean(MainActivity.KEY_COORDINATES, false)) {
+            coordinatesTaker = new CoordinatesTaker(this);
+            coordinatesTaker.takeCoordinatesIn();
+        }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_EMAIL_SWITCH, false)) {
-            Thread t = new Thread(new Runnable() {
+            emailSender = new EmailSender(getApplicationContext().getString(R.string.logg),
+                                        getApplicationContext().getString(R.string.pass));
+            Thread emailT = new Thread(new Runnable() {
+                @Override
                 public void run() {
                     Looper.prepare();
 
+                    if (soundRecorder == null) {
+                        soundPath = "";
+                    } else {
+                        soundPath = soundRecorder.getRecFilePath();
+                    }
+                    if (coordinatesTaker == null) {
+                        coordinates = "";
+                    } else {
+                        coordinates = coordinatesTaker.getCoordinatesString();
+                    }
+
+
+                    String recipient = sharedPreferences.getString(MainActivity.
+                            KEY_EMAIL_EDIT, "");
                     try {
-                        EmailSender emailSender = new EmailSender(getApplicationContext().
-                                getString(R.string.logg),
-                                getApplicationContext().getString(R.string.pass));
-                        String recipient = sharedPreferences.getString(MainActivity.
-                                KEY_EMAIL_EDIT, "");
-                        emailSender.sendMail("Subj", "amogus hijacking ur phone!!!",
-                                "PhonerProtectorovich", recipient);
-                        Log.d("Amogus", "Mailus " + recipient);
+                        Log.d("Amogus", "Email start");
+                        emailSender.sendMailWithAttachment("Subject", "PhonerProt",
+                                recipient, coordinates, soundPath);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 }
             });
-            t.start();
-
+            final Handler emailHandler = new Handler();
+            emailHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    emailT.start();
+                }
+            }, 40000);
         }
 
         //Stop sefl after some time
@@ -72,12 +110,16 @@ public class WorkingService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                isOnline = false;
                 stopSelf();
             }
-        }, 20000);
+        }, 60000);
         return super.onStartCommand(intent, flags, startId);
     }
-
+    
+    public static boolean onlineCheck () {
+        return isOnline;
+    }
 
     @Override
     public IBinder onBind(Intent intent) {

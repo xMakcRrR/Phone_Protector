@@ -5,9 +5,12 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,7 +32,7 @@ public class SoundRecorder {
         this.directory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         this.date = new SimpleDateFormat("dd-MM-yyyy",
                 Locale.getDefault()).format(new Date());
-        this.fileName = new File(directory, date+"soundrec" + ".3gp");
+        this.fileName = new File(directory, "soundrec"+date+".3gp");
     }
 
     private void startRecord () {
@@ -83,5 +86,18 @@ public class SoundRecorder {
 
     public String getRecFilePath() {
         return this.fileName.getPath();
+    }
+
+    private void saving () {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        InputStream inputStream;
+        FileOutputStream fileOutputStream;
+        File byterDir = new File(""+Environment.getExternalStorageDirectory()+"/phone_prot/");
+
+        if(!byterDir.exists()) {
+            //Toast.makeText(getActivity(), "aboba", Toast.LENGTH_LONG).show();
+            byterDir.mkdirs();
+        };
     }
 }

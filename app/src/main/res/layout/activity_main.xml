@@ -29,11 +29,10 @@
         android:ems="10"
         android:hint="@string/attempts_text2"
         android:inputType="number"
+        android:maxLength="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForAttempts"
-        android:maxLength="2"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewForAttempts" />
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -44,7 +43,6 @@
         android:hint="@string/edit_text_email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewForEmail" />
 
@@ -52,70 +50,109 @@
         android:id="@+id/checkBoxCameraFront"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/check_box_camera_f_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAttempts" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForPhoto" />
 
     <CheckBox
         android:id="@+id/checkBoxCameraBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="@string/check_box_camera_b_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraFront" />
+
+    <CheckBox
+        android:id="@+id/checkBoxCameraPhotoSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/check_box_photo_save"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraBack" />
 
     <CheckBox
         android:id="@+id/checkBoxCoordinates"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="@string/check_box_coordinates_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraBack" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForGps" />
 
     <CheckBox
         android:id="@+id/checkBoxAudio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="@string/check_box_audio_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCoordinates" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForSound" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSoundSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/check_box_sound_save"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxAudio" />
 
     <CheckBox
         android:id="@+id/checkBoxSendEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="@string/check_box_send_email"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxAudio" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewForAttempts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/attempts_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/starter_switch" />
+
+    <TextView
+        android:id="@+id/textViewForPhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_photo_opt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAttempts" />
+
+    <TextView
+        android:id="@+id/textViewForGps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_gps_opt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraPhotoSave" />
+
+    <TextView
+        android:id="@+id/textViewForSound"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_sound_opt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxCoordinates" />
 
     <TextView
         android:id="@+id/textViewForEmail"
@@ -123,8 +160,7 @@
         android:layout_height="wrap_content"
         android:text="@string/text_view_for_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSendEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxSoundSave" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

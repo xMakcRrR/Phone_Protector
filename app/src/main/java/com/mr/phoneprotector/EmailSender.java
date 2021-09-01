@@ -3,6 +3,7 @@ package com.mr.phoneprotector;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.util.Properties;
 
@@ -27,7 +28,7 @@ public class EmailSender extends javax.mail.Authenticator {
     private String password;
     private Session session;
 
-    public boolean isOnline(Context context) {
+    public boolean isEthernetReady(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -79,7 +80,7 @@ public class EmailSender extends javax.mail.Authenticator {
 
     public void sendMailWithAttachment(String subject, String sender,
                                        String recipient, String coords,
-                                       String filepath) throws Exception {
+                                       String soundFilepath) throws Exception {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
@@ -88,21 +89,27 @@ public class EmailSender extends javax.mail.Authenticator {
         Multipart multipart = new MimeMultipart();
 
         //Adding coordinates
-
         BodyPart coordsBodyPart = new MimeBodyPart();
-        coordsBodyPart.setContent(coords, "text/plain");
+        if (!coords.equals("")) {
+            coordsBodyPart.setContent(coords, "text/plain");
+        } else {
+            coordsBodyPart.setContent("Amogus hijack", "text/plain");
+        }
         multipart.addBodyPart(coordsBodyPart);
 
         //Adding sound record
-        MimeBodyPart soundBodyPart = new MimeBodyPart();
-        DataSource source = new FileDataSource(filepath);
-        soundBodyPart.setDataHandler(new DataHandler(source));
-        soundBodyPart.setFileName("SoundRec.mp3");
-        multipart.addBodyPart(soundBodyPart);
-
+        if (!soundFilepath.equals("")) {
+            MimeBodyPart soundBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(soundFilepath);
+            soundBodyPart.setDataHandler(new DataHandler(source));
+            soundBodyPart.setFileName(soundFilepath);
+            multipart.addBodyPart(soundBodyPart);
+        }
 
         //Adding photos
+
         message.setContent(multipart);
+        Log.d("Amogus", "Mail away");
         Transport.send(message);
     }
 }

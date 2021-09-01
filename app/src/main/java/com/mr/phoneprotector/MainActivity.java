@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final int REQUEST_NETWORK_STATE_CODE = 3;
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
+
     //PREFERENCES KEYS
     public static final String PREF_NAME = "PHONE_PROTECTOR_PREF";
     public static final String KEY_EMAIL_SWITCH = "KEY_EMAIL_SWITCH";
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final String KEY_COORDINATES = "KEY_COORDINATES";
     public static final String KEY_AUDIO = "KEY_AUDIO";
     public static final String KEY_EMAIL_EDIT = "KEY_EMAIL_EDIT";
+    public static final String KEY_PHOTO_SAVE = "KEY_PHOTO_SAVE";
+    public static final String KEY_SOUND_SAVE = "KEY_SOUND_SAVE";
 
     SharedPreferences sharedPreferences;
 
@@ -48,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     CheckBox checkBoxCoordinates;
     CheckBox checkBoxAudio;
     CheckBox checkBoxSendEmail;
+    CheckBox checkBoxPhotoSave;
+    CheckBox checkBoxSoundSave;
+
+    //TODO checkBoxes for save options
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +155,20 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             checkBoxSendEmail.setChecked(true);
         }
         checkBoxSendEmail.setOnCheckedChangeListener(this);
+
+        //photo save switch prep
+        checkBoxPhotoSave = findViewById(R.id.checkBoxCameraPhotoSave);
+        if (sharedPreferences.getBoolean(KEY_PHOTO_SAVE, false)) {
+            checkBoxPhotoSave.setChecked(true);
+        }
+        checkBoxPhotoSave.setOnCheckedChangeListener(this);
+
+        //photo save switch prep
+        checkBoxSoundSave = findViewById(R.id.checkBoxSoundSave);
+        if (sharedPreferences.getBoolean(KEY_SOUND_SAVE, false)) {
+            checkBoxSoundSave.setChecked(true);
+        }
+        checkBoxSoundSave.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -171,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             }
         }
 
-        if (buttonView == findViewById(R.id.checkBoxCoordinates)) {
+        else if (buttonView == findViewById(R.id.checkBoxCoordinates)) {
             if (isChecked) {
                 if(!CheckPermissionsLocation()) {
                     requestPermissionsLocation();
@@ -184,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        if (buttonView == findViewById(R.id.checkBoxCameraFront)) {
+        else if (buttonView == findViewById(R.id.checkBoxCameraFront)) {
             if (isChecked) {
                 //TODO PERMISSIONS FOR CAMERA
                 editor.putBoolean(KEY_CAMERA_F, true);
@@ -195,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        if (buttonView == findViewById(R.id.checkBoxCameraBack)) {
+        else if (buttonView == findViewById(R.id.checkBoxCameraBack)) {
             if (isChecked) {
                 //TODO PERMISSIONS FOR CAMERA
                 editor.putBoolean(KEY_CAMERA_B, true);
@@ -206,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        if (buttonView == findViewById(R.id.checkBoxAudio)) {
+        else if (buttonView == findViewById(R.id.checkBoxAudio)) {
             if (isChecked) {
                 if(!CheckPermissionsAudioRecord()) {
                     requestPermissionsAudioRecord();
@@ -219,12 +241,32 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        if (buttonView == findViewById(R.id.checkBoxSendEmail)) {
+        else if (buttonView == findViewById(R.id.checkBoxSendEmail)) {
             if (isChecked) {
                 editor.putBoolean(KEY_EMAIL_SWITCH, true);
             }
             else {
                 editor.putBoolean(KEY_EMAIL_SWITCH, false);
+            }
+            editor.apply();
+        }
+
+        else if (buttonView == findViewById(R.id.checkBoxCameraPhotoSave)) {
+            if (isChecked) {
+                editor.putBoolean(KEY_PHOTO_SAVE, true);
+            }
+            else {
+                editor.putBoolean(KEY_PHOTO_SAVE, false);
+            }
+            editor.apply();
+        }
+
+        else if (buttonView == findViewById(R.id.checkBoxSoundSave)) {
+            if (isChecked) {
+                editor.putBoolean(KEY_SOUND_SAVE, true);
+            }
+            else {
+                editor.putBoolean(KEY_SOUND_SAVE, false);
             }
             editor.apply();
         }

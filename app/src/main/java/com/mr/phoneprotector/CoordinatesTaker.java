@@ -33,12 +33,10 @@ public class CoordinatesTaker {
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             GPScoordinates = takeCoordinatesViaGPS();
-            locationManager.removeUpdates(locationListener);
         }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             NETWORKcoordinates = takeCoordinatesViaNETWORK();
-            locationManager.removeUpdates(locationListener);
         }
 
 
@@ -47,25 +45,20 @@ public class CoordinatesTaker {
         return GPScoordinates + "\n" + NETWORKcoordinates;
     }
 
-    public String takeCoordinatesIn () {
+    public void takeCoordinatesIn () {
         String GPScoordinates = "GPS disabled";
         String NETWORKcoordinates = "NETWORK disabled";
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             GPScoordinates = takeCoordinatesViaGPS();
-            locationManager.removeUpdates(locationListener);
         }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             NETWORKcoordinates = takeCoordinatesViaNETWORK();
-            locationManager.removeUpdates(locationListener);
         }
-
-
 
         locationManager.removeUpdates(locationListener);
         this.coordinates = GPScoordinates + "\n" + NETWORKcoordinates;
-        return this.coordinates;
     }
 
     private String takeCoordinatesViaGPS () {
@@ -113,7 +106,7 @@ public class CoordinatesTaker {
         }
     }
 
-    public String getCoordinates() {
+    public String getCoordinatesString() {
         return this.coordinates;
     }
 }

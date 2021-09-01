@@ -14,7 +14,7 @@
         Без режима администратора приложение не будет работать. При выключении "защиты" режим
         администратора отключается.
         ВАЖНО: ЕСЛИ ВЫ ЗАХОТИТЕ УДАЛИТЬ ПРИЛОЖЕНИЕ, СНАЧАЛА НУЖНО БУДЕТ ОТКЛЮЧИТЬ "ЗАЩИТУ".
-        В ПРОТИВНОМ СЛУЧАЕ ПРИЛОЖЕНИЕ ПОПРОСТУ НЕ УДАЛИТСЯ.</string>
+        В ПРОТИВНОМ СЛУЧАЕ ПРИЛОЖЕНИЕ НА НЕКОТОРЫХ УСТРОЙСТВАХ МОЖЕТ ПОПРОСТУ НЕ УДАЛИТЬСЯ.</string>
     <string name="attempts_text">Количество попыток до срабатывания.</string>
     <string name="attempts_text2">Введите количество попыток до срабатывания.</string>
     <string name="check_box_camera_f_text">Делать снимок с фронтальной камеры.</string>
@@ -22,8 +22,13 @@
     <string name="check_box_coordinates_text">Записывать координаты с GPS.</string>
     <string name="check_box_audio_text">Записывать звук с микрофона (30 сек.).</string>
     <string name="check_box_send_email">Отправлять email.</string>
+    <string name="check_box_photo_save">Сохранять фотографии на устройстве.</string>
+    <string name="check_box_sound_save">Сохранять звук на устройстве.</string>
     <string name="logg">phonerprotecorovich@gmail.com</string>
     <string name="pass">PhonerPassSlozniy</string>
-    <string name="text_view_for_email">Email, на который будет высылаться письмо.</string>
-    <string name="edit_text_email">Введите свой email.</string>
+    <string name="text_view_for_email">Настройки Email:</string>
+    <string name="edit_text_email">Введите свой email...</string>
+    <string name="text_photo_opt">Настройки камеры:</string>
+    <string name="text_gps_opt">Настройки GPS:</string>
+    <string name="text_sound_opt">Настройки записи звука:</string>
 </resources>
