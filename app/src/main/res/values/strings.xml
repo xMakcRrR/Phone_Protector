@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Phone Protector</string>
+    <string name="app_name" translatable="false">Phone Protector</string>
     <string name="off_switch">Выкл</string>
     <string name="on_switch">Вкл</string>
     <string name="text_switch">Защитник</string>
     <string name="switch_toggled_true">Защита работает</string>
     <string name="switch_toggled_false">Защита отключена</string>
-    <string name="notification_title">Amogus</string>
-    <string name="notification_text">zdarova</string>
+    <string name="notification_title" translatable="false">Phone Protector</string>
+    <string name="notification_text">Служба работает...</string>
     <string name="notification_channel_description">Канал уведомлений приложения Phone Protector.</string>
     <string name="admin_req_expl">Для отслеживания неверных попыток входа приложению
         необходимо включить режим администратора.
@@ -24,11 +24,12 @@
     <string name="check_box_send_email">Отправлять email.</string>
     <string name="check_box_photo_save">Сохранять фотографии на устройстве.</string>
     <string name="check_box_sound_save">Сохранять звук на устройстве.</string>
-    <string name="logg">phonerprotecorovich@gmail.com</string>
-    <string name="pass">PhonerPassSlozniy</string>
+    <string name="logg" translatable="false">phonerprotecorovich@gmail.com</string>
+    <string name="pass" translatable="false">PhonerPassSlozniy</string>
     <string name="text_view_for_email">Настройки Email:</string>
     <string name="edit_text_email">Введите свой email...</string>
     <string name="text_photo_opt">Настройки камеры:</string>
     <string name="text_gps_opt">Настройки GPS:</string>
     <string name="text_sound_opt">Настройки записи звука:</string>
+    <string name="text_before_scroll">Настройки:</string>
 </resources>

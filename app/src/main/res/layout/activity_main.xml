@@ -21,6 +21,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:showText="true" />
 
+    <CheckBox
+        android:id="@+id/checkBoxSendEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/check_box_send_email"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <TextView
+        android:id="@+id/textViewForAttempts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/attempts_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/starter_switch" />
+
     <EditText
         android:id="@+id/editTextAttempts"
         android:layout_width="0dp"
@@ -46,114 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewForEmail" />
 
-    <CheckBox
-        android:id="@+id/checkBoxCameraFront"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_camera_f_text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForPhoto" />
-
-    <CheckBox
-        android:id="@+id/checkBoxCameraBack"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_camera_b_text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraFront" />
-
-    <CheckBox
-        android:id="@+id/checkBoxCameraPhotoSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_photo_save"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraBack" />
-
-    <CheckBox
-        android:id="@+id/checkBoxCoordinates"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_coordinates_text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForGps" />
-
-    <CheckBox
-        android:id="@+id/checkBoxAudio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_audio_text"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForSound" />
-
-    <CheckBox
-        android:id="@+id/checkBoxSoundSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_sound_save"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxAudio" />
-
-    <CheckBox
-        android:id="@+id/checkBoxSendEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/check_box_send_email"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textViewForAttempts"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/attempts_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/starter_switch" />
-
-    <TextView
-        android:id="@+id/textViewForPhoto"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/text_photo_opt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAttempts" />
-
-    <TextView
-        android:id="@+id/textViewForGps"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/text_gps_opt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCameraPhotoSave" />
-
-    <TextView
-        android:id="@+id/textViewForSound"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/text_sound_opt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxCoordinates" />
-
     <TextView
         android:id="@+id/textViewForEmail"
         android:layout_width="0dp"
@@ -161,6 +72,91 @@
         android:text="@string/text_view_for_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSoundSave" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAttempts" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBeforeScroll">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewForPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_photo_opt" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCameraFront"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_camera_f_text"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCameraBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_camera_b_text"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCameraPhotoSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_photo_save"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewForGps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_gps_opt" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCoordinates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_coordinates_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewForSound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_sound_opt" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_audio_text"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSoundSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_box_sound_save"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewBeforeScroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_before_scroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxSendEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="off_switch">Off</string>
+    <string name="on_switch">On</string>
+    <string name="text_switch">Protector</string>
+    <string name="switch_toggled_true">Protector online</string>
+    <string name="switch_toggled_false">Protector offline</string>
+    <string name="notification_text">Service online</string>
+    <string name="notification_channel_description">Notification channel Phone Protector\'s app</string>
+    <string name="admin_req_expl">To set incorrect login attempts to the application
+        you must enable administrator mode.
+        Below you can see which phone functions the application is accessing.
+        Without administrator mode, the application will not work. When you turn off the "protection" mode
+        the administrator is disconnected.
+        IMPORTANT: IF YOU WANT TO REMOVE THE APPLICATION, FIRST YOU WILL NEED TO DISABLE "PROTECTION".
+        OTHERWISE, THE APPLICATION MAY NOT BE REMOVED ON SOME DEVICES.</string>
+    <string name="attempts_text">The number of attempts before triggering.</string>
+    <string name="attempts_text2">Enter the number of attempts.</string>
+    <string name="check_box_camera_f_text">Take a picture with the front camera.</string>
+    <string name="check_box_camera_b_text">Take a picture from the rear camera.</string>
+    <string name="check_box_coordinates_text">Record coordinates from GPS.</string>
+    <string name="check_box_audio_text">Record sound from microphone (30 sec.).</string>
+    <string name="check_box_send_email">Send email.</string>
+    <string name="check_box_photo_save">Save photos to your device.</string>
+    <string name="check_box_sound_save">Save sound to device.</string>
+    <string name="text_view_for_email">Email Settings:</string>
+    <string name="edit_text_email">Enter your email ...</string>
+    <string name="text_photo_opt">Camera settings:</string>
+    <string name="text_gps_opt">GPS settings:</string>
+    <string name="text_sound_opt">Audio recording settings:</string>
+    <string name="text_before_scroll">Settings:</string>
+</resources>
