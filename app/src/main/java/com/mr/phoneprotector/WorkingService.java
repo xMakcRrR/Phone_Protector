@@ -56,7 +56,10 @@ public class WorkingService extends Service {
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false)) {
             soundRecorder = new SoundRecorder(this);
-            soundRecorder.takeRecord();
+
+            soundRecorder.takeRecordWithDuration(30000);
+
+            //soundRecorder.takeRecord();
         }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_COORDINATES, false)) {

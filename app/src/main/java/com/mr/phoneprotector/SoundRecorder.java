@@ -35,6 +35,33 @@ public class SoundRecorder {
         this.fileName = new File(directory, "soundrec"+date+".3gp");
     }
 
+    public void takeRecordWithDuration (int duration) {
+        mediaRecorder = new MediaRecorder();
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setOutputFile(fileName);
+        mediaRecorder.setMaxDuration(duration);
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mediaRecorder, int i, int i1) {
+                if (i == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                    mediaRecorder.reset();
+                    mediaRecorder.release();
+                }
+            }
+        });
+
+        mediaRecorder.start();
+    }
+
     private void startRecord () {
         mediaRecorder = new MediaRecorder();
 
