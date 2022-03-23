@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,25 +24,45 @@ public class SoundRecorder {
     private File fileName;
     private ContextWrapper contextWrapper;
     private String date;
+    private String fileString;
 
     //for test
     MediaPlayer mediaPlayer;
 
     public SoundRecorder (ContextWrapper context) {
         this.contextWrapper = context;
+
+
+        /*
         this.directory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         this.date = new SimpleDateFormat("dd-MM-yyyy",
                 Locale.getDefault()).format(new Date());
         this.fileName = new File(directory, "soundrec"+date+".3gp");
+         */
+    }
+
+    private void prepFile() {
+        this.fileName = new File(Environment.getExternalStorageDirectory().getPath(),
+                "/Phone Protector/");
+        this.date = new SimpleDateFormat("dd-MM-yyyy",
+                Locale.getDefault()).format(new Date());
+        if(!fileName.exists()){
+            fileName.mkdirs();
+        }
+        fileString = fileName.getAbsolutePath()+"/"+"_"+date+".3gp";
     }
 
     public void takeRecordWithDuration (int duration) {
         mediaRecorder = new MediaRecorder();
+        prepFile();
+
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(fileName);
+        mediaRecorder.setOutputFile(fileString);
+        Log.d("Amogus", fileString);
+        //mediaRecorder.setOutputFile(fileName);
         mediaRecorder.setMaxDuration(duration);
 
         try {
@@ -112,19 +133,7 @@ public class SoundRecorder {
     }
 
     public String getRecFilePath() {
-        return this.fileName.getPath();
-    }
-
-    private void saving () {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        InputStream inputStream;
-        FileOutputStream fileOutputStream;
-        File byterDir = new File(""+Environment.getExternalStorageDirectory()+"/phone_prot/");
-
-        if(!byterDir.exists()) {
-            //Toast.makeText(getActivity(), "aboba", Toast.LENGTH_LONG).show();
-            byterDir.mkdirs();
-        };
+        return fileString;
+        //return this.fileName.getPath();
     }
 }

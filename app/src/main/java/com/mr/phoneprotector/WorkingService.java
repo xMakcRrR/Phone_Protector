@@ -7,12 +7,17 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WorkingService extends Service {
     private static boolean isOnline;
@@ -54,12 +59,29 @@ public class WorkingService extends Service {
 
         sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
 
-        if (sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false)) {
+        if (sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false) ||
+                sharedPreferences.getBoolean(MainActivity.KEY_AUDIO_SAVE, false)) {
             soundRecorder = new SoundRecorder(this);
 
-            soundRecorder.takeRecordWithDuration(30000);
+            Thread soundT = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    soundRecorder.takeRecordWithDuration(30000);
+                    while (!Thread.currentThread().isInterrupted()) {
 
-            //soundRecorder.takeRecord();
+                    }
+                }
+            });
+            soundT.start();
+
+            //TODO Thread interrupt
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    soundT.interrupt();
+                    Log.d("Amogus", "soundT " + soundT.isInterrupted());
+                }
+            }, 30500);
         }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_COORDINATES, false)) {
@@ -75,7 +97,7 @@ public class WorkingService extends Service {
                 public void run() {
                     Looper.prepare();
 
-                    if (soundRecorder == null) {
+                    if (!sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false)) {
                         soundPath = "";
                     } else {
                         soundPath = soundRecorder.getRecFilePath();
@@ -99,6 +121,14 @@ public class WorkingService extends Service {
 
                 }
             });
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    emailT.start();
+                    Log.d("Amogus", "emailT started");
+                }
+            }, 40000);
+            /*
             final Handler emailHandler = new Handler();
             emailHandler.postDelayed(new Runnable() {
                 @Override
@@ -106,9 +136,24 @@ public class WorkingService extends Service {
                     emailT.start();
                 }
             }, 40000);
+             */
         }
 
         //Stop sefl after some time
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!sharedPreferences.getBoolean(MainActivity.KEY_AUDIO_SAVE, false)) {
+                    File file = new File(soundRecorder.getRecFilePath());
+                    file.delete();
+                }
+
+
+                isOnline = false;
+                stopSelf();
+            }
+        }, 60000);
+        /*
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -117,6 +162,7 @@ public class WorkingService extends Service {
                 stopSelf();
             }
         }, 60000);
+         */
         return super.onStartCommand(intent, flags, startId);
     }
     

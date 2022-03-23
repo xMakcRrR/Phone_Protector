@@ -4,8 +4,12 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CoordinatesTaker {
     private LocationManager locationManager;
@@ -67,6 +71,7 @@ public class CoordinatesTaker {
                     0, 0, locationListener);
 
             Thread.sleep(30000);
+
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (location != null) {

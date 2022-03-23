@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final String KEY_AUDIO = "KEY_AUDIO";
     public static final String KEY_EMAIL_EDIT = "KEY_EMAIL_EDIT";
     public static final String KEY_PHOTO_SAVE = "KEY_PHOTO_SAVE";
-    public static final String KEY_SOUND_SAVE = "KEY_SOUND_SAVE";
+    public static final String KEY_AUDIO_SAVE = "KEY_AUDIO_SAVE";
 
     SharedPreferences sharedPreferences;
 
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         //photo save switch prep
         checkBoxSoundSave = findViewById(R.id.checkBoxSoundSave);
-        if (sharedPreferences.getBoolean(KEY_SOUND_SAVE, false)) {
+        if (sharedPreferences.getBoolean(KEY_AUDIO_SAVE, false)) {
             checkBoxSoundSave.setChecked(true);
         }
         checkBoxSoundSave.setOnCheckedChangeListener(this);
@@ -263,10 +262,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         else if (buttonView == findViewById(R.id.checkBoxSoundSave)) {
             if (isChecked) {
-                editor.putBoolean(KEY_SOUND_SAVE, true);
+                editor.putBoolean(KEY_AUDIO_SAVE, true);
             }
             else {
-                editor.putBoolean(KEY_SOUND_SAVE, false);
+                editor.putBoolean(KEY_AUDIO_SAVE, false);
             }
             editor.apply();
         }

@@ -19,8 +19,8 @@
     <string name="attempts_text2">Введите количество попыток до срабатывания.</string>
     <string name="check_box_camera_f_text">Делать снимок с фронтальной камеры.</string>
     <string name="check_box_camera_b_text">Делать снимок с задней камеры.</string>
-    <string name="check_box_coordinates_text">Записывать координаты с GPS.</string>
-    <string name="check_box_audio_text">Записывать звук с микрофона (30 сек.).</string>
+    <string name="check_box_coordinates_text">Отправлять координаты GPS по email.</string>
+    <string name="check_box_audio_text">Отправлять звукозапись на email.</string>
     <string name="check_box_send_email">Отправлять email.</string>
     <string name="check_box_photo_save">Сохранять фотографии на устройстве.</string>
     <string name="check_box_sound_save">Сохранять звук на устройстве.</string>
