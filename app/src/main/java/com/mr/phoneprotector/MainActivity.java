@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 2;
     public static final int REQUEST_NETWORK_STATE_CODE = 3;
+    public static final int REQUEST_CAMERA_PERMISSION_CODE = 4;
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         //edit text pin attempts prep
         editTextAttempts = findViewById(R.id.editTextAttempts);
         String s_attempts = sharedPreferences.getString(KEY_ATTEMPTS, "5");
-        if (Integer.parseInt(s_attempts) == 0) {
+        if (Integer.parseInt(s_attempts) < 0) {
             editTextAttempts.setText("5");
         } else {
             editTextAttempts.setText(s_attempts);
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         else if (buttonView == findViewById(R.id.checkBoxCameraFront)) {
             if (isChecked) {
-                //TODO PERMISSIONS FOR CAMERA
+                requestPermissionCamera();
                 editor.putBoolean(KEY_CAMERA_F, true);
             }
             else {
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         else if (buttonView == findViewById(R.id.checkBoxCameraBack)) {
             if (isChecked) {
-                //TODO PERMISSIONS FOR CAMERA
+                requestPermissionCamera();
                 editor.putBoolean(KEY_CAMERA_B, true);
             }
             else {
@@ -274,6 +275,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void requestPermissionCamera() {
+        // perm for cam
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION_CODE);
     }
 
     private void requestPermissionsAudioRecord() {
@@ -370,12 +378,23 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                                 "Permission Granted for network state", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(),
-                                "Permission Granted for network state", Toast.LENGTH_LONG).show();
+                                "Permission Denied for network state", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case REQUEST_CAMERA_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionCamera = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (permissionCamera) {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Granted for camera", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Denied for network state", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
         }
     }
-
-
 }
