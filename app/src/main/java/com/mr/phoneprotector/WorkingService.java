@@ -28,7 +28,8 @@ public class WorkingService extends Service {
 
     private String coordinates;
     private String soundPath;
-    private PicturesTaker picturesTaker;
+    private PicturesTaker picturesTakerB;
+    private PicturesTaker picturesTakerF;
     
     public WorkingService() {
     }
@@ -61,17 +62,15 @@ public class WorkingService extends Service {
         sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_B, false)) {
-            picturesTaker = new PicturesTaker(this);
+            picturesTakerB = new PicturesTaker(this);
 
-            picturesTaker.readyCamera(PicturesTaker.CAMERACHOICE_B);
-            //picturesTaker.PicturesOut();
+            picturesTakerB.readyCamera(PicturesTaker.CAMERACHOICE_B);
         }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_F, false)) {
-            picturesTaker = new PicturesTaker(this);
+            picturesTakerF = new PicturesTaker(this);
 
-            picturesTaker.readyCamera(PicturesTaker.CAMERACHOICE_F);
-            //picturesTaker.PicturesOut();
+            picturesTakerF.readyCamera(PicturesTaker.CAMERACHOICE_F);
         }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_AUDIO, false) ||

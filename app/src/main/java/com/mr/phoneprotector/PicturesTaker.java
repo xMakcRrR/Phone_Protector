@@ -39,6 +39,7 @@ public class PicturesTaker {
     public static final int CAMERACHOICE_F = CameraCharacteristics.LENS_FACING_FRONT;
     private Context context;
     private int camChoice;
+    private boolean done;
 
     public PicturesTaker(Context context) {
         this.context = context;
@@ -78,15 +79,25 @@ public class PicturesTaker {
 
         @Override
         public void onReady(CameraCaptureSession session) {
-            PicturesTaker.this.session = session;
-            try {
-                session.setRepeatingRequest(createCaptureRequest(), null, null);
-                cameraCaptureStartTime = System.currentTimeMillis();
-            } catch (CameraAccessException e) {
-                Log.e(TAG, e.getMessage());
+            Log.e(TAG, "onReady in");
+            if (!done) {
+                PicturesTaker.this.session = session;
+                try {
+                    session.setRepeatingRequest(createCaptureRequest(), null, null);
+                    cameraCaptureStartTime = System.currentTimeMillis();
+                } catch (CameraAccessException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            } else {
+                try {
+                    PicturesOut();
+                    Log.e(TAG, "Pictures out yes)");
+                } catch (Exception E) {
+                    Log.e(TAG, "Pictures out no(");
+                    return;
+                }
             }
         }
-
 
         @Override
         public void onConfigured(CameraCaptureSession session) {
@@ -106,8 +117,12 @@ public class PicturesTaker {
             if (img != null) {
                 if (System.currentTimeMillis () > cameraCaptureStartTime + CAMERA_CALIBRATION_DELAY) {
                     processImage(img);
+                    reader.close();
+                    done = true;
+
                 }
                 img.close();
+
             }
         }
     };
@@ -209,8 +224,6 @@ public class PicturesTaker {
             }
 
         }
-
-        //PicturesOut();
     }
 
     private void getFile(int choice) {
@@ -231,10 +244,13 @@ public class PicturesTaker {
 
     public void PicturesOut () {
         try {
-            session.abortCaptures();
+            this.session.abortCaptures();
         } catch (CameraAccessException e){
             Log.e(TAG, e.getMessage());
         }
-        session.close();
+
+
+        this.session.close();
+        this.cameraDevice.close();
     }
 }
