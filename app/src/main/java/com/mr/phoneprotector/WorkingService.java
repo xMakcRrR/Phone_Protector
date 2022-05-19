@@ -28,6 +28,8 @@ public class WorkingService extends Service {
 
     private String coordinates;
     private String soundPath;
+    private String photoBPath;
+    private String photoFPath;
     private PicturesTaker picturesTakerB;
     private PicturesTaker picturesTakerF;
     
@@ -61,13 +63,15 @@ public class WorkingService extends Service {
 
         sharedPreferences = getSharedPreferences(MainActivity.PREF_NAME, MODE_PRIVATE);
 
-        if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_B, false)) {
+        if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_B, false) ||
+                sharedPreferences.getBoolean(MainActivity.KEY_PHOTOB_SAVE, false)) {
             picturesTakerB = new PicturesTaker(this);
 
             picturesTakerB.readyCamera(PicturesTaker.CAMERACHOICE_B);
         }
 
-        if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_F, false)) {
+        if (sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_F, false) ||
+                sharedPreferences.getBoolean(MainActivity.KEY_PHOTOF_SAVE, false)) {
             picturesTakerF = new PicturesTaker(this);
 
             picturesTakerF.readyCamera(PicturesTaker.CAMERACHOICE_F);
@@ -81,9 +85,12 @@ public class WorkingService extends Service {
                 @Override
                 public void run() {
                     soundRecorder.takeRecordWithDuration(30000);
+                    /*
                     while (!Thread.currentThread().isInterrupted()) {
-
+                        //working while recording
                     }
+
+                     */
                 }
             });
             soundT.start();
@@ -121,6 +128,16 @@ public class WorkingService extends Service {
                     } else {
                         coordinates = coordinatesTaker.getCoordinatesString();
                     }
+                    if (!sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_B, false)) {
+                        photoBPath = "";
+                    } else {
+                        photoBPath = picturesTakerB.getFilePath();
+                    }
+                    if (!sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_F, false)) {
+                        photoFPath = "";
+                    } else {
+                        photoFPath = picturesTakerF.getFilePath();
+                    }
 
 
                     String recipient = sharedPreferences.getString(MainActivity.
@@ -128,7 +145,7 @@ public class WorkingService extends Service {
                     try {
                         Log.d("Amogus", "Email start");
                         emailSender.sendMailWithAttachment("Subject", "PhonerProt",
-                                recipient, coordinates, soundPath);
+                                recipient, coordinates, soundPath, photoBPath, photoFPath);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -157,10 +174,20 @@ public class WorkingService extends Service {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!sharedPreferences.getBoolean(MainActivity.KEY_AUDIO_SAVE, false)) {
+                //clear files if needed
+                if (!sharedPreferences.getBoolean(MainActivity.KEY_AUDIO_SAVE, false) && (soundRecorder != null)) {
                     File file = new File(soundRecorder.getRecFilePath());
                     file.delete();
                 }
+                if (!sharedPreferences.getBoolean(MainActivity.KEY_PHOTOB_SAVE, false) && (picturesTakerB != null)) {
+                    File file = new File(picturesTakerB.getFilePath());
+                    file.delete();
+                }
+                if (!sharedPreferences.getBoolean(MainActivity.KEY_PHOTOF_SAVE, false) && (picturesTakerF != null)) {
+                    File file = new File(picturesTakerF.getFilePath());
+                    file.delete();
+                }
+
 
 
                 isOnline = false;

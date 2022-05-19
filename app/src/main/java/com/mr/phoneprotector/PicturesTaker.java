@@ -242,6 +242,10 @@ public class PicturesTaker {
 
     }
 
+    public String getFilePath () {
+        return fileString;
+    }
+
     public void PicturesOut () {
         try {
             this.session.abortCaptures();

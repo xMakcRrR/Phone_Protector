@@ -109,14 +109,14 @@
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/checkBoxCameraBackPhotoSave"
+                android:id="@+id/checkBoxCameraFrontPhotoSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/check_box_photoF_save"
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/checkBoxCameraFrontPhotoSave"
+                android:id="@+id/checkBoxCameraBackPhotoSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/check_box_photoB_save"

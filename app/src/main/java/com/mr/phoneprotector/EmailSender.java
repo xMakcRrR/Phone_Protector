@@ -82,7 +82,8 @@ public class EmailSender extends javax.mail.Authenticator {
 
     public void sendMailWithAttachment(String subject, String sender,
                                        String recipient, String coords,
-                                       String soundFilepath) throws Exception {
+                                       String soundFilepath, String photoBPath,
+                                       String photoFPath) throws Exception {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(sender));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
@@ -109,6 +110,20 @@ public class EmailSender extends javax.mail.Authenticator {
         }
 
         //Adding photos
+        if (!photoBPath.equals("")) {
+            MimeBodyPart photoBBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(photoBPath);
+            photoBBodyPart.setDataHandler(new DataHandler(source));
+            photoBBodyPart.setFileName(photoBPath);
+            multipart.addBodyPart(photoBBodyPart);
+        }
+        if (!photoFPath.equals("")) {
+            MimeBodyPart photoFBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(photoFPath);
+            photoFBodyPart.setDataHandler(new DataHandler(source));
+            photoFBodyPart.setFileName(photoFPath);
+            multipart.addBodyPart(photoFBodyPart);
+        }
 
         message.setContent(multipart);
         Log.d("Amogus", "Mail away");

@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 editor.putBoolean(KEY_CAMERA_F, false);
             }
             editor.apply();
+            Log.d("Amogus", "cam email front " + sharedPreferences.getBoolean(KEY_CAMERA_F, false));
         }
 
         else if (buttonView == findViewById(R.id.checkBoxCameraBack)) {
@@ -235,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 editor.putBoolean(KEY_CAMERA_B, false);
             }
             editor.apply();
+            Log.d("Amogus", "cam email back " + sharedPreferences.getBoolean(KEY_CAMERA_B, false));
         }
 
         else if (buttonView == findViewById(R.id.checkBoxAudio)) {
@@ -260,16 +262,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        else if (buttonView == findViewById(R.id.checkBoxCameraBackPhotoSave)) {
-            if (isChecked) {
-                editor.putBoolean(KEY_PHOTOB_SAVE, true);
-            }
-            else {
-                editor.putBoolean(KEY_PHOTOB_SAVE, false);
-            }
-            editor.apply();
-        }
-
         else if (buttonView == findViewById(R.id.checkBoxCameraFrontPhotoSave)) {
             if (isChecked) {
                 editor.putBoolean(KEY_PHOTOF_SAVE, true);
@@ -278,6 +270,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 editor.putBoolean(KEY_PHOTOF_SAVE, false);
             }
             editor.apply();
+            Log.d("Amogus", "Cam front save " + sharedPreferences.getBoolean(KEY_PHOTOF_SAVE, false));
+        }
+
+        else if (buttonView == findViewById(R.id.checkBoxCameraBackPhotoSave)) {
+            if (isChecked) {
+                editor.putBoolean(KEY_PHOTOB_SAVE, true);
+            }
+            else {
+                editor.putBoolean(KEY_PHOTOB_SAVE, false);
+            }
+            editor.apply();
+            Log.d("Amogus", "Cam back save " + sharedPreferences.getBoolean(KEY_PHOTOB_SAVE, false));
         }
 
         else if (buttonView == findViewById(R.id.checkBoxSoundSave)) {
