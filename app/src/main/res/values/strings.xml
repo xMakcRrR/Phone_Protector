@@ -22,7 +22,8 @@
     <string name="check_box_coordinates_text">Отправлять координаты GPS по email.</string>
     <string name="check_box_audio_text">Отправлять звукозапись на email.</string>
     <string name="check_box_send_email">Отправлять email.</string>
-    <string name="check_box_photo_save">Сохранять фотографии на устройстве.</string>
+    <string name="check_box_photoB_save">Сохранять фотографию с задней камеры на устройстве.</string>
+    <string name="check_box_photoF_save">Сохранять фотографию с фронтальной камеры на устройстве.</string>
     <string name="check_box_sound_save">Сохранять звук на устройстве.</string>
     <string name="logg" translatable="false">phonerprotecorovich@gmail.com</string>
     <string name="pass" translatable="false">PhonerPassSlozniy</string>

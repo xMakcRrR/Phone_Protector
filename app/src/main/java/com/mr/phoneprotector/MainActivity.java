@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final String KEY_COORDINATES = "KEY_COORDINATES";
     public static final String KEY_AUDIO = "KEY_AUDIO";
     public static final String KEY_EMAIL_EDIT = "KEY_EMAIL_EDIT";
-    public static final String KEY_PHOTO_SAVE = "KEY_PHOTO_SAVE";
+    public static final String KEY_PHOTOB_SAVE = "KEY_PHOTOB_SAVE";
+    public static final String KEY_PHOTOF_SAVE = "KEY_PHOTOF_SAVE";
     public static final String KEY_AUDIO_SAVE = "KEY_AUDIO_SAVE";
 
     SharedPreferences sharedPreferences;
@@ -52,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     CheckBox checkBoxCoordinates;
     CheckBox checkBoxAudio;
     CheckBox checkBoxSendEmail;
-    CheckBox checkBoxPhotoSave;
+    CheckBox checkBoxPhotoBSave;
+    CheckBox checkBoxPhotoFSave;
     CheckBox checkBoxSoundSave;
 
     //TODO checkBoxes for save options
@@ -156,12 +158,19 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }
         checkBoxSendEmail.setOnCheckedChangeListener(this);
 
-        //photo save switch prep
-        checkBoxPhotoSave = findViewById(R.id.checkBoxCameraPhotoSave);
-        if (sharedPreferences.getBoolean(KEY_PHOTO_SAVE, false)) {
-            checkBoxPhotoSave.setChecked(true);
+        //photoB save switch prep
+        checkBoxPhotoBSave = findViewById(R.id.checkBoxCameraBackPhotoSave);
+        if (sharedPreferences.getBoolean(KEY_PHOTOB_SAVE, false)) {
+            checkBoxPhotoBSave.setChecked(true);
         }
-        checkBoxPhotoSave.setOnCheckedChangeListener(this);
+        checkBoxPhotoBSave.setOnCheckedChangeListener(this);
+
+        //photoF save switch prep
+        checkBoxPhotoFSave = findViewById(R.id.checkBoxCameraFrontPhotoSave);
+        if (sharedPreferences.getBoolean(KEY_PHOTOF_SAVE, false)) {
+            checkBoxPhotoFSave.setChecked(true);
+        }
+        checkBoxPhotoFSave.setOnCheckedChangeListener(this);
 
         //photo save switch prep
         checkBoxSoundSave = findViewById(R.id.checkBoxSoundSave);
@@ -251,12 +260,22 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             editor.apply();
         }
 
-        else if (buttonView == findViewById(R.id.checkBoxCameraPhotoSave)) {
+        else if (buttonView == findViewById(R.id.checkBoxCameraBackPhotoSave)) {
             if (isChecked) {
-                editor.putBoolean(KEY_PHOTO_SAVE, true);
+                editor.putBoolean(KEY_PHOTOB_SAVE, true);
             }
             else {
-                editor.putBoolean(KEY_PHOTO_SAVE, false);
+                editor.putBoolean(KEY_PHOTOB_SAVE, false);
+            }
+            editor.apply();
+        }
+
+        else if (buttonView == findViewById(R.id.checkBoxCameraFrontPhotoSave)) {
+            if (isChecked) {
+                editor.putBoolean(KEY_PHOTOF_SAVE, true);
+            }
+            else {
+                editor.putBoolean(KEY_PHOTOF_SAVE, false);
             }
             editor.apply();
         }

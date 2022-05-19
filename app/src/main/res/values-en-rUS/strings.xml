@@ -21,7 +21,8 @@
     <string name="check_box_coordinates_text">Send email with GPS coordinates.</string>
     <string name="check_box_audio_text">Send email with audio record.</string>
     <string name="check_box_send_email">Send email.</string>
-    <string name="check_box_photo_save">Save photos to your device.</string>
+    <string name="check_box_photoB_save">Save photo from back cam to your device.</string>
+    <string name="check_box_photoF_save">Save photo from front cam to your device.</string>
     <string name="check_box_sound_save">Save sound to device.</string>
     <string name="text_view_for_email">Email Settings:</string>
     <string name="edit_text_email">Enter your email ...</string>
