@@ -24,6 +24,7 @@ public class WorkingService extends Service {
     private SharedPreferences sharedPreferences;
     private SoundRecorder soundRecorder;
     private CoordinatesTaker coordinatesTaker;
+    private CoordinatesTaker2 coordinatesTaker2;
     private EmailSender emailSender;
 
     private String coordinates;
@@ -105,9 +106,13 @@ public class WorkingService extends Service {
             }, 30500);
         }
 
-        if (sharedPreferences.getBoolean(MainActivity.KEY_COORDINATES, false)) {
-            coordinatesTaker = new CoordinatesTaker(this);
+        if (sharedPreferences.getBoolean(MainActivity.KEY_COORDINATES, false)
+                && sharedPreferences.getBoolean(MainActivity.KEY_EMAIL_SWITCH, false)) {
+            /*coordinatesTaker = new CoordinatesTaker(this);
             coordinatesTaker.takeCoordinatesIn();
+             */
+            coordinatesTaker2 = new CoordinatesTaker2(this);
+            coordinatesTaker2.startTakeCoordinatesIn();
         }
 
         if (sharedPreferences.getBoolean(MainActivity.KEY_EMAIL_SWITCH, false)) {
@@ -123,10 +128,11 @@ public class WorkingService extends Service {
                     } else {
                         soundPath = soundRecorder.getRecFilePath();
                     }
-                    if (coordinatesTaker == null) {
+                    if (coordinatesTaker2 == null) {
                         coordinates = "";
                     } else {
-                        coordinates = coordinatesTaker.getCoordinatesString();
+                        //coordinates = coordinatesTaker.getCoordinatesString();
+                        coordinates = coordinatesTaker2.getCoords();
                     }
                     if (!sharedPreferences.getBoolean(MainActivity.KEY_CAMERA_B, false)) {
                         photoBPath = "";

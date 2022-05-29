@@ -16,7 +16,8 @@ public class CoordinatesTaker {
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            locationManager.removeUpdates(this);
+
+            //locationManager.removeUpdates(this);
         }
         @Override
         public void onProviderDisabled(String provider) {
@@ -70,7 +71,7 @@ public class CoordinatesTaker {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     0, 0, locationListener);
 
-            Thread.sleep(30000);
+            //Thread.sleep(30000);
 
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -83,9 +84,9 @@ public class CoordinatesTaker {
             }
         } catch (SecurityException e) {
             return "GPS permissions disabled";
-        } catch (InterruptedException e) {
+        } /*catch (InterruptedException e) {
             return "Amogus";
-        }
+        }*/
     }
 
     private String takeCoordinatesViaNETWORK () {
@@ -93,7 +94,7 @@ public class CoordinatesTaker {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                     0, 0, locationListener);
 
-            Thread.sleep(10000);
+            //Thread.sleep(10000);
             Location location =
                     locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -106,9 +107,10 @@ public class CoordinatesTaker {
             }
         } catch (SecurityException e) {
             return "NetWork permissions disabled";
-        } catch (InterruptedException e) {
+        } /*catch (InterruptedException e) {
             return "Amogus";
-        }
+        }*/
+
     }
 
     public String getCoordinatesString() {
