@@ -71,12 +71,24 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         DevicePolicyManager dpm=
                 (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
 
-        //stater switch prep
+
         starterSwitch = findViewById(R.id.starter_switch);
+        checkBoxCameraFront = findViewById(R.id.checkBoxCameraFront);
+        checkBoxCameraBack = findViewById(R.id.checkBoxCameraBack);
+        checkBoxCoordinates = findViewById(R.id.checkBoxCoordinates);
+        checkBoxAudio = findViewById(R.id.checkBoxAudio);
+        checkBoxSendEmail = findViewById(R.id.checkBoxSendEmail);
+        checkBoxPhotoBSave = findViewById(R.id.checkBoxCameraBackPhotoSave);
+        checkBoxPhotoFSave = findViewById(R.id.checkBoxCameraFrontPhotoSave);
+        checkBoxSoundSave = findViewById(R.id.checkBoxSoundSave);
+
+        disableChange(false);
+
+        //stater switch prep
+        starterSwitch.setOnCheckedChangeListener(this);
         if (dpm.isAdminActive(cn)) {
             starterSwitch.setChecked(true);
         }
-        starterSwitch.setOnCheckedChangeListener(this);
 
         //edit text pin attempts prep
         editTextAttempts = findViewById(R.id.editTextAttempts);
@@ -124,56 +136,48 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         });
 
         //camera front switch prep
-        checkBoxCameraFront = findViewById(R.id.checkBoxCameraFront);
         if (sharedPreferences.getBoolean(KEY_CAMERA_F, false)) {
             checkBoxCameraFront.setChecked(true);
         }
         checkBoxCameraFront.setOnCheckedChangeListener(this);
 
         //camera back switch prep
-        checkBoxCameraBack = findViewById(R.id.checkBoxCameraBack);
         if (sharedPreferences.getBoolean(KEY_CAMERA_B, false)) {
             checkBoxCameraBack.setChecked(true);
         }
         checkBoxCameraBack.setOnCheckedChangeListener(this);
 
         //gps switch prep
-        checkBoxCoordinates = findViewById(R.id.checkBoxCoordinates);
         if (sharedPreferences.getBoolean(KEY_COORDINATES, false)) {
             checkBoxCoordinates.setChecked(true);
         }
         checkBoxCoordinates.setOnCheckedChangeListener(this);
 
         //audio switch prep
-        checkBoxAudio = findViewById(R.id.checkBoxAudio);
         if (sharedPreferences.getBoolean(KEY_AUDIO, false)) {
             checkBoxAudio.setChecked(true);
         }
         checkBoxAudio.setOnCheckedChangeListener(this);
 
         //email switch prep
-        checkBoxSendEmail = findViewById(R.id.checkBoxSendEmail);
         if (sharedPreferences.getBoolean(KEY_EMAIL_SWITCH, false)) {
             checkBoxSendEmail.setChecked(true);
         }
         checkBoxSendEmail.setOnCheckedChangeListener(this);
 
         //photoB save switch prep
-        checkBoxPhotoBSave = findViewById(R.id.checkBoxCameraBackPhotoSave);
         if (sharedPreferences.getBoolean(KEY_PHOTOB_SAVE, false)) {
             checkBoxPhotoBSave.setChecked(true);
         }
         checkBoxPhotoBSave.setOnCheckedChangeListener(this);
 
         //photoF save switch prep
-        checkBoxPhotoFSave = findViewById(R.id.checkBoxCameraFrontPhotoSave);
         if (sharedPreferences.getBoolean(KEY_PHOTOF_SAVE, false)) {
             checkBoxPhotoFSave.setChecked(true);
         }
         checkBoxPhotoFSave.setOnCheckedChangeListener(this);
 
         //photo save switch prep
-        checkBoxSoundSave = findViewById(R.id.checkBoxSoundSave);
         if (sharedPreferences.getBoolean(KEY_AUDIO_SAVE, false)) {
             checkBoxSoundSave.setChecked(true);
         }
@@ -197,8 +201,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                         getString(R.string.admin_req_expl));
                 startActivity(intent);
+                disableChange(true);
             } else if (!isChecked) {
                 dpm.removeActiveAdmin(cn);
+                disableChange(false);
             }
         }
 
@@ -418,6 +424,28 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     }
                 }
                 break;
+        }
+    }
+
+    private void disableChange (boolean b) {
+        checkBoxSendEmail.setEnabled(b);
+        checkBoxCameraFront.setEnabled(b);
+        checkBoxCameraBack.setEnabled(b);
+        checkBoxPhotoFSave.setEnabled(b);
+        checkBoxPhotoBSave.setEnabled(b);
+        checkBoxCoordinates.setEnabled(b);
+        checkBoxAudio.setEnabled(b);
+        checkBoxSoundSave.setEnabled(b);
+
+        if (!b) {
+            checkBoxSendEmail.setChecked(false);
+            checkBoxCameraFront.setChecked(false);
+            checkBoxCameraBack.setChecked(false);
+            checkBoxPhotoFSave.setChecked(false);
+            checkBoxPhotoBSave.setChecked(false);
+            checkBoxCoordinates.setChecked(false);
+            checkBoxAudio.setChecked(false);
+            checkBoxSoundSave.setChecked(false);
         }
     }
 }
