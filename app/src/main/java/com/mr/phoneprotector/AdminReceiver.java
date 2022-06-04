@@ -17,8 +17,13 @@ public class AdminReceiver extends DeviceAdminReceiver {
 
         sharedPreferences = context.getSharedPreferences(MainActivity.
                 PREF_NAME, Context.MODE_PRIVATE);
-        attempts = Integer.parseInt(sharedPreferences.
-                getString(MainActivity.KEY_ATTEMPTS, "5"));
+        try {
+            attempts = Integer.parseInt(sharedPreferences.
+                    getString(MainActivity.KEY_ATTEMPTS, "5"));
+        } catch (NumberFormatException e) {
+            attempts = 5;
+        }
+
         Log.d("Amogus", "OnEnabled "+ attempts);
     }
 
@@ -26,8 +31,12 @@ public class AdminReceiver extends DeviceAdminReceiver {
     public void onPasswordFailed (Context context, Intent intent, UserHandle user) {
         sharedPreferences = context.getSharedPreferences(MainActivity.
                 PREF_NAME, Context.MODE_PRIVATE);
-        attempts = Integer.parseInt(sharedPreferences.
-                getString(MainActivity.KEY_ATTEMPTS, "5"));
+        try {
+            attempts = Integer.parseInt(sharedPreferences.
+                    getString(MainActivity.KEY_ATTEMPTS, "5"));
+        } catch (NumberFormatException e) {
+            attempts = 5;
+        }
         DevicePolicyManager devicePolicyManager = (DevicePolicyManager)context.
                 getSystemService(Context.DEVICE_POLICY_SERVICE);
 
@@ -46,8 +55,12 @@ public class AdminReceiver extends DeviceAdminReceiver {
     public void onPasswordSucceeded (Context context, Intent intent, UserHandle user) {
         sharedPreferences = context.getSharedPreferences(MainActivity.
                 PREF_NAME, Context.MODE_PRIVATE);
-        attempts = Integer.parseInt(sharedPreferences.
-                getString(MainActivity.KEY_ATTEMPTS, "5"));
+        try {
+            attempts = Integer.parseInt(sharedPreferences.
+                    getString(MainActivity.KEY_ATTEMPTS, "5"));
+        } catch (NumberFormatException e) {
+            attempts = 5;
+        }
         DevicePolicyManager devicePolicyManager =
                 (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         Log.d("Amogus", "OnPassSucc "+ devicePolicyManager.

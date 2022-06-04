@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 2;
     public static final int REQUEST_NETWORK_STATE_CODE = 3;
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 4;
+    public static final int REQUEST_DRAW_PERMISSION_CODE = 5;
     public static String NOTIF_ID_STRING = "phn_prtctr01";
     public static int NOTIF_ID = 2054;
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -93,11 +96,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         //edit text pin attempts prep
         editTextAttempts = findViewById(R.id.editTextAttempts);
         String s_attempts = sharedPreferences.getString(KEY_ATTEMPTS, "5");
-        if (Integer.parseInt(s_attempts) < 0) {
-            editTextAttempts.setText("5");
-        } else {
-            editTextAttempts.setText(s_attempts);
-        }
+        editTextAttempts.setText(s_attempts);
         editTextAttempts.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -421,6 +420,19 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "Permission Denied for network state", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case REQUEST_DRAW_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionDraw = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (permissionDraw) {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Granted for draw", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Permission Denied for draw", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
